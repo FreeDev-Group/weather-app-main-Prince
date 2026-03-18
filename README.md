@@ -2,7 +2,7 @@
 
 This is a solution to the [Weather app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/weather-app-K1FhddVm49). Frontend Mentor challenges help to improve coding skills by building realistic projects.
 
-![](./screenshot.PNG)
+![](./screenshot.png)
 
 ## Table of contents
 
