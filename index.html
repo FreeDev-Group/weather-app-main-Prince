@@ -1,66 +1,317 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=DM+Sans:ital,wght@0,300;0,500;0,600;0,700;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Frontend Mentor | Weather app</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <header class="app-header">
+        <div class="logo-container">
+          <img
+            src="./assets/images/logo.svg"
+            alt="Weather Now logo"
+            class="logo"
+          />
+        </div>
+        <div class="units-container">
+          <button
+            id="units-toggle-btn"
+            class="units-btn"
+            aria-expanded="false"
+            aria-controls="units-dropdown"
+          >
+            <img
+              src="./assets/images/icon-units.svg"
+              alt=""
+              aria-hidden="true"
+              class="units-icon"
+            />
+            <span>Units</span>
+            <img
+              src="./assets/images/icon-dropdown.svg"
+              alt=""
+              aria-hidden="true"
+              class="dropdown-icon"
+            />
+          </button>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Weather app</title>
+          <div id="units-dropdown" class="dropdown-menu hidden">
+            <h4>Switch to Imperial/Metric</h4>
+            <div class="unit-group">
+              <h5>Temperature</h5>
+              <!-- <div class="unit-group-active-item unit-group-item">
+                <div>Celsius (°C)</div>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt="check mark"
+                />
+              </div> -->
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="temp-unit"
+                  value="celsius"
+                  class="sr-only"
+                  checked
+                />
+                <span>Celsius (°C)</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="temp-unit"
+                  value="fahrenheit"
+                  class="sr-only"
+                />
+                <span>Fahrenheit (°F)</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+            </div>
+            <div class="unit-group">
+              <h5>Wind Speed</h5>
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="wind-unit"
+                  value="kmh"
+                  class="sr-only"
+                  checked
+                />
+                <span>km/h</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="wind-unit"
+                  value="mph"
+                  class="sr-only"
+                />
+                <span>mph</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+            </div>
+            <div class="unit-group">
+              <h5>Precipitation</h5>
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="precip-unit"
+                  value="mm"
+                  class="sr-only"
+                  checked
+                />
+                <span>Millimeters (mm)</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+              <label class="unit-option">
+                <input
+                  type="radio"
+                  name="precip-unit"
+                  value="inch"
+                  class="sr-only"
+                />
+                <span>Inches (in)</span>
+                <img
+                  src="./assets/images/icon-checkmark.svg"
+                  alt=""
+                  class="checkmark"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </header>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
+      <section id="api-error" class="error-container hidden">
+        <img
+          src="./assets/images/icon-error.svg"
+          alt="error icon"
+          class="error-icon"
+        />
+        <h2>Something went wrong</h2>
+        <p>
+          We couldn't connect to the server (API error). Please try again in a
+          few moments.
+        </p>
+        <button id="retry-btn" class="retry-btn">
+          <img src="./assets/images/icon-retry.svg" alt="" />
+          Retry
+        </button>
+      </section>
 
-  Units
+      <div class="search-section">
+        <h1 class="main-title">How's the sky looking today?</h1>
+        <form
+          class="search-form"
+          id="search-form"
+          onsubmit="event.preventDefault()"
+        >
+          <div class="search-input-wrapper">
+            <img
+              src="./assets/images/icon-search.svg"
+              alt=""
+              aria-hidden="true"
+              class="search-icon"
+            />
+            <label for="search-input" class="sr-only">Search for a place</label>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search for a place..."
+              autocomplete="off"
+            />
+            <ul id="search-results" class="search-results hidden"></ul>
+          </div>
+          <button type="submit" class="search-btn" id="search-btn">
+            Search
+          </button>
+        </form>
 
-  Switch to Imperial/Metric
+        <div id="search-message" class="search-message hidden">
+          No search result found!
+        </div>
+      </div>
 
-  Temperature
+      <main class="main-content">
+        <div class="left-column">
+          <!-- Big Current Weather Card -->
+          <section class="current-card" aria-label="Current Weather">
+            <div id="spinner" class="is-loading">
+              <img
+                src="./assets/images/icon-loading.svg"
+                alt="Weather icon"
+                class="current-main-icon spin"
+              />
+              <span class="">loading...</span>
+            </div>
+            <div class="current-item-content hidden">
+              <div class="current-location-time">
+                <h2 id="current-city" class="current-city">--</h2>
+                <p id="current-date" class="current-date">--</p>
+              </div>
+              <div class="current-weather-main">
+                <img
+                  src="./assets/images/icon-loading.svg"
+                  alt="Weather icon"
+                  id="current-icon"
+                  class="current-main-icon"
+                />
+                <span id="current-temp" class="current-temp">--</span>
+              </div>
+            </div>
+          </section>
 
-  Celsius (°C)
-  Fahrenheit (°F)
+          <!-- Current Details -->
+          <section class="current-details-grid" aria-label="Weather Details">
+            <div class="detail-card">
+              <p class="detail-label">Feels Like</p>
+              <p class="detail-value" id="current-feels-like">--</p>
+            </div>
+            <div class="detail-card">
+              <p class="detail-label">Humidity</p>
+              <p class="detail-value" id="current-humidity">--</p>
+            </div>
+            <div class="detail-card">
+              <p class="detail-label">Wind</p>
+              <p class="detail-value" id="current-wind">--</p>
+            </div>
+            <div class="detail-card">
+              <p class="detail-label">Precipitation</p>
+              <p class="detail-value" id="current-precip">--</p>
+            </div>
+          </section>
 
-  Wind Speed
+          <!-- Daily Forecast -->
+          <section class="daily-section" aria-label="Daily Forecast">
+            <h3 class="section-title">Daily forecast</h3>
+            <div class="daily-forecast-row" id="daily-grid">
+              <!-- Loaded by JS -->
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+              <div class="daily-card" style="width: 120px; height: 180px"></div>
+            </div>
+          </section>
+        </div>
 
-  km/h
-  mph
+        <div class="right-column">
+          <!-- Hourly Panel -->
+          <section class="hourly-panel" aria-label="Hourly Forecast">
+            <div class="hourly-header">
+              <h3 class="section-title">Hourly forecast</h3>
+              <button class="hourly-day-selector" id="hourly-dropdown-btn">
+                <span id="selected-day-label">Today</span>
+                <img
+                  src="./assets/images/icon-dropdown.svg"
+                  alt=""
+                  aria-hidden="true"
+                  class="dropdown-icon"
+                />
+              </button>
+              <ul id="hourly-dropdown-list" class="hourly-dropdown-list hidden">
+                <!-- Filled by JS -->
+              </ul>
+            </div>
+            <div class="hourly-list" id="hourly-list">
+              <!-- Loaded by JS -->
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+              <div class="hourly-card" style="width: 100%; height: 140px"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
 
-  Precipitation
+    <!-- <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Antigravity</a>.
+  </footer> -->
 
-  Millimeters (mm)
-  Inches (in)
-
-  How's the sky looking today?
-
-  Search for a city, e.g., New York
-  Search
-
-  Feels like
-  <!-- Insert temperature here -->
-
-  Humidity
-  <!-- Insert humidity here -->
-
-  Wind
-  <!-- Insert wind here -->   
-  
-  Precipitation
-  <!-- Insert precipitation here -->
-
-  Daily forecast
-  <!-- Insert daily forecast for the next 7 days here -->
-
-  Hourly forecast
-  <!-- Insert hourly forecast for the selected day here -->
-
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
-</body>
+    <script src="./js/app.js"></script>
+  </body>
 </html>
