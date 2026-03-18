@@ -36,7 +36,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Weather App solution](https://your-solution-url.com)
+- Solution URL: [Weather App solution](https://www.frontendmentor.io/solutions/frontend-mentor---weather-app-DZUzIksJ8L)
 - Live Site URL: [Weather App](https://freedev-group.github.io/weather-app-main-Prince/)
 
 ## My process
